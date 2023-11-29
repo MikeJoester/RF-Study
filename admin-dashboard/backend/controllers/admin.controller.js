@@ -41,7 +41,7 @@ export const login = (req, res) => {
       //Check password
       const isPasswordCorrect = bcrypt.compareSync(
         req.body.password,
-        data[0].password
+        data[0].admin_pwd
       );
   
       if (!isPasswordCorrect)
