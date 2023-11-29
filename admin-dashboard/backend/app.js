@@ -1,43 +1,20 @@
-const express = require('express')
-const path = require('path')
-const cors = require('cors')
+import express from "express";
+import authRoutes from './routes/auth.routes.js'
+//import studentsRoutes from './routes/students.routes.js'
+import cookieParser from 'cookie-parser'
 const app = express()
-require('express-async-errors')
 
-const port = 8080
-const db = require('./db')
-const bodyParser = require('body-parser')
-    studentRoutes = require('./controllers/student.controller')
+const PORT = 8888;
 
-app.use(cors(
-    { 
-        origin: [""], 
-        methods: ["POST, GET"],
-        credentials: true
-    }
-))
-
-// db.query("SELECT 1")
-//     .then(() => {
-//         console.log("Database connection succeeded!")
-//         app.listen(port, () => {
-//             console.log(`Server is running on port: ${port}`)
-//         })
-//     })
-//     .catch(err => console.log("Database connection failed! \n" + err))
+app.use(express.json())
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/test.html'));
+    res.json("Backend is working")
 })
 
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`)
-})
+app.use("/api/auth", authRoutes);
 
-//middleware
-app.use(bodyParser.json())
-app.use('/api/students', studentRoutes)
-app.use((err, req, res, next) => {
-    console.log(err)
-    res.status(err.status || 500).send('Something went wrong!');
+app.listen(PORT, () => {
+    console.log("Connected at port " + PORT)
 })

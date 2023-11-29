@@ -1,16 +1,10 @@
-const mysql = require('mysql2/promise')
-const dotenv = require('dotenv')
+import mysql from 'mysql2'
+import dotenv from 'dotenv'
 
 dotenv.config({path: './.env'})
 
-const database = mysql.createPool({
+export const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: process.env.DATABASE
 })
-
-// database.query("SELECT *")
-//     .then(data => console.log(data))
-//     .catch(err => console.log("Database connection failed! \n" + err))
-
-module.exports = database
