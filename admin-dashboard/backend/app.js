@@ -1,56 +1,43 @@
 const express = require('express')
 const path = require('path')
 const cors = require('cors')
-const passport = require('passport')
-var mysql = require('mysql2')
-require("./config/passport")(passport)
-require('dotenv').config()
-
 const app = express()
-const port = process.env.PORT || 8080
+require('express-async-errors')
 
-app.use(cors({ origin: true, credentials: true }))
+const port = 8080
+const db = require('./db')
+const bodyParser = require('body-parser')
+    studentRoutes = require('./controllers/student.controller')
 
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "students"
+app.use(cors(
+    { 
+        origin: [""], 
+        methods: ["POST, GET"],
+        credentials: true
+    }
+))
+
+// db.query("SELECT 1")
+//     .then(() => {
+//         console.log("Database connection succeeded!")
+//         app.listen(port, () => {
+//             console.log(`Server is running on port: ${port}`)
+//         })
+//     })
+//     .catch(err => console.log("Database connection failed! \n" + err))
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/test.html'));
 })
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`)
 })
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!!!")
-  });
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/test.html'));
+//middleware
+app.use(bodyParser.json())
+app.use('/api/students', studentRoutes)
+app.use((err, req, res, next) => {
+    console.log(err)
+    res.status(err.status || 500).send('Something went wrong!');
 })
-
-// route goes here
-// const blogsRouter = require('./routes/blogs')
-// const classesRouter = require('./routes/classes')
-// const courselogsRouter = require('./routes/course-logs')
-// const coursesRouter = require('./routes/courses')
-// const majorsRouter = require('./routes/majors')
-// const studentsRouter = require('./routes/students')
-// const resultsRouter = require('./routes/student-result')
-// const authRouter = require('./routes/auth')
-// const transcriptRouter = require('./routes/transcript')
-// const adminLoginRouter = require('./routes/admin-auth')
-// const surveyRouter = require('./routes/surveys')
-
-// app.use("/blogs", blogsRouter)
-// app.use("/classes", classesRouter)
-// app.use("/courselogs", courselogsRouter)
-// app.use("/courses", coursesRouter)
-// app.use("/majors", majorsRouter)
-// app.use("/students", studentsRouter)
-// app.use("/results", resultsRouter)
-// app.use("/auth", authRouter)
-// app.use("/transcript", transcriptRouter)
-// app.use("/adminlogin", adminLoginRouter)
-// app.use("/surveys", surveyRouter)
