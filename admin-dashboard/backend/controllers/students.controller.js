@@ -11,7 +11,7 @@ export const getStudents = (req, res) => {
 }
 
 export const getStudent = (req, res) => {
-    const q = "SELECT * FROM users WHERE id = ?"
+    const q = "SELECT * FROM users WHERE serialnumber = ?"
     db.query(q, [req.params.id], (err, data) => {
         if (err) return res.send(err)
 
@@ -49,7 +49,19 @@ export const addStudent = (req, res) => {
 }
 
 export const updateStudent = (req, res) => {
-    
+    const cardId = req.params.id;
+    const q = "UPDATE users SET `username`, `serialnumber`, `gender`, `email` WHERE `card_uid` = ?"
+
+    const values = [
+        req.body.name,
+        req.body.maj, 
+        req.body.mode
+    ]
+
+    db.query(q, [...values, cardId], (err, data) => {
+        if (err) return res.status(500).json(err)
+        return res.json("Student info has been updated.")
+    })
 }
 
 
@@ -63,5 +75,23 @@ export const deleteStudent = (req, res) => {
 }
 
 export const verifyStudent = (req, res) => {
-    
+    const q = "SELECT * FROM users WHERE card_uid = ?"
+    const result = [];
+    db.query(q, [req.params.cardId], (err, data) => {
+        if (err) return res.status(500).json(err)
+
+        if (data.length === 0) return res.status(404).json("Student not found!")
+
+        return res.status(200).json(data)
+        result = data
+    });
+
+    const qq = "INSERT INTO users_logs(`username`, `serialnumber`, `card_uid`, `device_uid`, `device_dep`, `checkindate`, `timein`, `timeout`, `card_out`) VALUES (?)"
+    const values = [
+        req.body.username,
+        req.body.serialnumber,
+        req.body.card_uid,
+        req.body.device_uid,
+        req.body.device_dep
+    ]
 }

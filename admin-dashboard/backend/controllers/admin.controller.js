@@ -31,32 +31,31 @@ export const register = (req, res) => {
 export const login = (req, res) => {
     //verify user
   
-    const q = "SELECT * FROM admin WHERE admin_email = ?";
-  
-    db.query(q, [req.body.email], (err, data) => {
-      if (err) return res.status(500).json(err);
-      if (data.length === 0) return res.status(404).json("User not found!");
-  
-      //Check password
-      const isPasswordCorrect = bcrypt.compareSync(
-        req.body.password,
-        data[0].admin_pwd
-      );
-  
-      if (!isPasswordCorrect)
-        return res.status(400).json("Wrong username or password!");
-  
-      const token = jwt.sign({ id: data[0].id }, "jwtkey");
-      const { password, ...other } = data[0];
-  
-      res
-        .cookie("access_token", token, {
-          httpOnly: true,
-        })
-        .status(200)
-        .json(other);
-    });
-  };
+  const q = "SELECT * FROM admin WHERE admin_email = ?"
+
+  db.query(q, [req.body.email], (err, data) => {
+    if (err) return res.status(500).json(err)
+    if (data.length === 0) return res.status(404).json("User not found!")
+
+    //Check password
+    const isPasswordCorrect = bcrypt.compareSync(
+      req.body.password,
+      data[0].admin_pwd
+    );
+
+    if (!isPasswordCorrect)
+      return res.status(400).json("Wrong username or password!")
+
+    const token = jwt.sign({ id: data[0].id }, "jwtkey")
+    const { password, ...other } = data[0];
+
+    res.cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json(other)
+  });
+};
   
   export const logout = (req, res) => {
     res.clearCookie("access_token",{
