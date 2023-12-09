@@ -23,6 +23,6 @@ app.use("/api/std", studentsRoutes)
 
 app.use("/api/device", devicesRoutes)
 
-app.listen(PORT, () => {
-    console.log("Connected at port " + PORT)
-})
+// app.listen(PORT, () => {
+//     console.log("Connected at port " + PORT)
+// })
