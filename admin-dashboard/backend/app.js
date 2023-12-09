@@ -3,9 +3,12 @@ import authRoutes from './routes/auth.routes.js'
 import studentsRoutes from './routes/students.routes.js'
 import devicesRoutes from './routes/devices.routes.js'
 import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv'
+
+dotenv.config({path: './.env'})
 const app = express()
 
-const PORT = 8888;
+const PORT = process.env.SVPORT;
 
 app.use(express.json())
 app.use(cookieParser())
