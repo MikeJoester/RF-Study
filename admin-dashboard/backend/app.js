@@ -5,7 +5,7 @@ import devicesRoutes from './routes/devices.routes.js'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 
-dotenv.config({path: './.env'})
+dotenv.config()
 const app = express()
 
 const PORT = process.env.SVPORT;
