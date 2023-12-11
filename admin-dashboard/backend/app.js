@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    res.sendFile("index.html")
+    res.sendFile("index.html", {root : "./"})
 })
 
 app.use("/api/auth", authRoutes)
