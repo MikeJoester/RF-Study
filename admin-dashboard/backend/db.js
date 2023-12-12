@@ -10,7 +10,7 @@ const dbinfo = {
     database: process.env.DATABASE,
 }
 
-// console.log(dbinfo)
+console.log(dbinfo)
 
 export const db = mysql.createConnection(dbinfo)
 
