@@ -27,7 +27,7 @@ export function Home() {
             <table className="w-full table-auto">
               <thead>
                 <tr>
-                  {["ID/Name", "Serial number", "budget", "completion"].map(
+                  {["ID", "Student name", "Gender", "Email", "Card UID", "Date", "Device"].map(
                     (el) => (
                       <th
                         key={el}
@@ -46,64 +46,49 @@ export function Home() {
               </thead>
               <tbody>
                 {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
+                  ({ serialnumber, username, gender, email, card_uid, user_date, device_uid }, key) => {
                     const className = `py-3 px-5 ${
                       key === projectsTableData.length - 1
                         ? ""
                         : "border-b border-blue-gray-50"
                     }`;
-
+                    const FormatDate = new Date(user_date).toLocaleDateString('en-GB')
+                    console.log('>>> FormatDate: ', FormatDate)
                     return (
-                      <tr key={name}>
+                      <tr key={username}>
                         <td className={className}>
                           <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {name}
-                            </Typography>
+                            {serialnumber}
                           </div>
                         </td>
                         <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${
-                                  key === 0 ? "" : "-ml-2.5"
-                                }`}
-                              />
-                            </Tooltip>
-                          ))}
+                          <div className="flex items-center gap-4">
+                            {username}
+                          </div>
                         </td>
                         <td className={className}>
-                          <Typography
-                            variant="small"
-                            className="text-xs font-medium text-blue-gray-600"
-                          >
-                            {budget}
-                          </Typography>
+                          <div className="flex items-center gap-4">
+                            {gender}
+                          </div>
                         </td>
                         <td className={className}>
-                          <div className="w-10/12">
-                            <Typography
-                              variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
-                            >
-                              {completion}%
-                            </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? "green" : "blue"}
-                              className="h-1"
-                            />
+                          <div className="flex items-center gap-4">
+                            {email}
+                          </div>
+                        </td>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            {card_uid.length > 0 ? card_uid : "None"}
+                          </div>
+                        </td>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            {FormatDate}
+                          </div>
+                        </td>
+                        <td className={className}>
+                          <div className="flex items-center gap-4">
+                            {device_uid}
                           </div>
                         </td>
                       </tr>
