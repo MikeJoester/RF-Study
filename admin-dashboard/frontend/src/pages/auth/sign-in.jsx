@@ -12,6 +12,7 @@ export function SignIn() {
   return (
     <section className="m-8 flex gap-4">
       <div className="w-full lg:w-3/5 mt-24">
+        <div className="absolute top-0"> Back </div>
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Sign In</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Enter your email and password to Sign In.</Typography>
@@ -65,7 +66,7 @@ export function SignIn() {
           </Button>
 
           <div className="flex items-center justify-between gap-2 mt-6">
-            <Checkbox
+            {/* <Checkbox
               label={
                 <Typography
                   variant="small"
@@ -76,14 +77,14 @@ export function SignIn() {
                 </Typography>
               }
               containerProps={{ className: "-ml-2.5" }}
-            />
+            /> */}
             <Typography variant="small" className="font-medium text-gray-900">
               <a href="#">
                 Forgot Password
               </a>
             </Typography>
           </div>
-          <div className="space-y-4 mt-8">
+          {/* <div className="space-y-4 mt-8">
             <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
               <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clipPath="url(#clip0_1156_824)">
@@ -108,7 +109,7 @@ export function SignIn() {
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">
             Not registered?
             <Link to="/auth/sign-up" className="text-gray-900 ml-1">Create account</Link>
-          </Typography>
+          </Typography> */}
         </form>
 
       </div>
