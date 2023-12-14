@@ -27,7 +27,7 @@ export function Home() {
             <table className="w-full table-auto">
               <thead>
                 <tr>
-                  {["ID", "Student name", "Gender", "Email", "Card UID", "Date", "Device"].map(
+                  {["ID", "Student name", "Gender", "Email", "Card UID", "Date", "Major"].map(
                     (el) => (
                       <th
                         key={el}
@@ -46,7 +46,7 @@ export function Home() {
               </thead>
               <tbody>
                 {projectsTableData.map(
-                  ({ serialnumber, username, gender, email, card_uid, user_date, device_uid }, key) => {
+                  ({ serialnumber, username, gender, email, card_uid, user_date, device_dep }, key) => {
                     const className = `py-3 px-5 ${
                       key === projectsTableData.length - 1
                         ? ""
@@ -88,7 +88,7 @@ export function Home() {
                         </td>
                         <td className={className}>
                           <div className="flex items-center gap-4">
-                            {device_uid}
+                            {device_dep}
                           </div>
                         </td>
                       </tr>
