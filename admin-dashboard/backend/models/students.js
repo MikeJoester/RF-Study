@@ -13,12 +13,13 @@ const students = new mongoose.Schema({
         type: Number,
         required:true
     },
-    card_select: {
+    card_status: {
         type: Boolean,
-        required:true
+        required:true,
+        default: false,
     },
-    user_date: {
-        type: Date,
+    device_uid: {
+        type: Number,
         required:true
     },
     department: {
@@ -31,21 +32,44 @@ const students = new mongoose.Schema({
         ref: "Log",
       },
     ],
-});
+}, { timestamps: true });
 
 const student_logs = new mongoose.Schema({
     name: {
-      type: String,
-      required:true
+        type: String,
+        required:true
     },
-    year: {
-      type: Number,
-      required:true
-  },
-    books: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Book",
-      },
-    ],
-});
+    serial: {
+        type: Number,
+        required:true
+    },
+    cardId: {
+        type: Number,
+        required:true
+    },
+    device_uid: {
+        type: Number,
+        required:true
+    },
+    department: {
+        type: String,
+        required:true
+    },
+    checkinDate: {
+        type: Date,
+        required:true,
+    },
+    timein: {
+        type: String,
+        required:true,
+    },
+    timeout: {
+        type: String,
+        required:true
+    }
+}, { timestamps: true });
+
+let Students = mongoose.model("Student", students);
+let StudentLogs = mongoose.model("Log", student_logs);
+
+module.exports = { Students, StudentLogs };

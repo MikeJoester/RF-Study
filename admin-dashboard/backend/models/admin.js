@@ -20,3 +20,5 @@ const admin = new mongoose.Schema({
         min: 8,
     },
 });
+
+module.exports = mongoose.model("admin", admin);
