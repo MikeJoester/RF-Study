@@ -52,15 +52,11 @@ router.put("/:id", async (req, res) => {
 
 //delete student
 router.delete("/:id", async (req, res) => {
-  if (req.body._id === req.params.id) {
-    try {
-      await Students.findByIdAndDelete(req.params.id);
-      res.status(200).json("Student has been deleted");
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  } else {
-    return res.status(403).json("Error deleting student info!");
+  try {
+    await Students.findByIdAndDelete(req.params.id);
+    res.status(200).json("Student has been deleted");
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
 
