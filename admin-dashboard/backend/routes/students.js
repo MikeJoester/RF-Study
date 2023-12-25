@@ -64,6 +64,20 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//view student logs
+router.get("/:id/logs", async (req, res) => {
+  try {
+    const student = await Students.findById(req.params.id).populate('logs');
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    return res.status(200).json(student.logs);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+});
+
 //add student log
 router.post("/:id/logs", async (req, res) => {
   try {
@@ -92,26 +106,5 @@ router.post("/:id/logs", async (req, res) => {
     return res.status(500).json(err);
   }
 });
-
-//update student log
-router.put("/:id/logs", async (req, res) => {
-    if (req.body.userId !== req.params.id) {
-      try {
-        const user = await Students.findById(req.params.id);
-        const currentUser = await Students.findById(req.body.userId);
-        if (user.followers.includes(req.body.userId)) {
-          await user.updateOne({ $pull: { followers: req.body.userId } });
-          await currentUser.updateOne({ $pull: { followings: req.params.id } });
-          res.status(200).json("user has been unfollowed");
-        } else {
-          res.status(403).json("you dont follow this user");
-        }
-      } catch (err) {
-        res.status(500).json(err);
-      }
-    } else {
-      res.status(403).json("you cant unfollow yourself");
-    }
-  });
 
 module.exports = router;
