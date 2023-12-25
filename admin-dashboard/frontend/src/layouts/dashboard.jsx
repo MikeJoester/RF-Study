@@ -7,6 +7,7 @@ import {
   Configurator,
 
 } from "@/widgets/layout";
+import { ModalCreateStd } from "@/widgets/popup";
 import routes from "@/routes";
 import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
 
