@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
 });
 
 //Update Device Info
-router.put("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   try {
     const device = await Device.findById(req.params.id);
     try {

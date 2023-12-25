@@ -35,18 +35,14 @@ router.post("/", async (req, res) => {
 });
 
 //update student
-router.put("/:id", async (req, res) => {
-  if (req.body._id === req.params.id) {
-    try {
-      const user = await Students.findByIdAndUpdate(req.params.id, {
-        $set: req.body,
-      });
-      res.status(200).json("Student info has been updated");
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  } else {
-    return res.status(403).json("Error updating student info!");
+router.patch("/:id", async (req, res) => {
+  try {
+    const user = await Students.findByIdAndUpdate(req.params.id, {
+      $set: req.body,
+    });
+    res.status(200).json("Student info has been updated");
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
 
