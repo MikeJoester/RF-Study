@@ -7,6 +7,7 @@ import {
   Avatar,
   Tooltip,
   Progress,
+  Input
 } from "@material-tailwind/react";
 import {
   projectsTableData,
@@ -25,9 +26,10 @@ export function Home() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleted, setShowDeleted] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [itemId, setItemId] = useState(null)
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +45,14 @@ export function Home() {
     };
     fetchData();
   }, []);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredUserData = userData.filter(student =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -77,12 +87,18 @@ export function Home() {
   }
   
   return (
-    <div className="mt-12">
-      <div className="flex left-0">
+    <div className="mt-2">
+      <div className="flex justify-between">
           <button id="defaultModalButton" onClick={toggleModal} data-modal-target="defaultModal" data-modal-toggle="defaultModal" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
             Add New Student
           </button>
+          <div className=" md:w-56">
+          <Input label="Search" value={searchTerm} onChange={handleSearchChange}/>
+          </div>
       </div>
+      
+           
+       
       <div className="mb-4 gap-6 xl:grid-cols-3">
         <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">    
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
@@ -107,7 +123,7 @@ export function Home() {
                 </tr>
               </thead>
               <tbody>
-                {userData.map(
+                {filteredUserData?.map(
                   ({_id, serial, name, cardId, department, device_uid }, key) => {
                     const className = `py-3 px-5 ${
                       key === userData.length - 1
