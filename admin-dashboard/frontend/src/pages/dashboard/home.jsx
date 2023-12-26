@@ -2,28 +2,22 @@ import React, { useState, useEffect } from "react";
 import {
   Typography,
   Card,
-  CardHeader,
   CardBody,
-  Avatar,
-  Tooltip,
-  Progress,
   Input
 } from "@material-tailwind/react";
 import {
-  projectsTableData,
-} from "@/data";
-import {
   ModalCreateStd,
   ModalDeleteUser,
-  ModalUpdateStd
+  ModalUpdateStd,
+  ModalLogUser
 } from "@/widgets/popup";
 import {
   getUserInfo,
-  deleteUser
 } from "@/API"
 
 export function Home() {
   const [showModal, setShowModal] = useState(false);
+  const [showLog, setShowLog] = useState(false);
   const [showDeleted, setShowDeleted] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [userData, setUserData] = useState([]);
@@ -58,14 +52,23 @@ export function Home() {
     setShowModal(!showModal);
   };
 
-  const handleShowDeleteModal = (id) => {
+  const handleShowLogModal = (id) => {
+    if(id){
+      setItemId(id)
+    }
+    setShowLog(!showLog);
+  };
+
+  const handleShowDeleteModal = (id, event) => {
+    if (event) event.stopPropagation();
     if(id) {
       setItemId(id)
     }
     setShowDeleted(!showDeleted)
   }
 
-  const handleShowUpdateModal = (id) => {
+  const handleShowUpdateModal = (id, event) => {
+    if (event) event.stopPropagation();
     if(id) {
       setItemId(id)
     }
@@ -131,46 +134,45 @@ export function Home() {
                         : "border-b border-blue-gray-50"
                     }`;
                     return (
-                      <tr key={_id}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            {serial}
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            {name}
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            {department}
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            {cardId}
-                          </div>
-                        </td>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            {device_uid}
-                          </div>
-                        </td>
-                        <td className="flex space-x-3 mt-1">
-                          <button onClick={() => handleShowUpdateModal(_id)} className="flex p-2 bg-green-500 rounded-xl hover:rounded-3xl hover:bg-green-600 transition-all duration-300 text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                          </button>
-                          <button onClick={() => handleShowDeleteModal(_id)} className="flex p-2 bg-red-400 rounded-xl hover:rounded-3xl hover:bg-red-600 transition-all duration-300 text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 flex items-center text-white-500 mx-auto" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-                        </td>
-                        
-                      </tr>
+                        <tr key={_id} onClick={() => handleShowLogModal(_id)} className="hover:text-blue-600 cursor-pointer">
+                          <td className={className}>
+                            <div className="flex items-center gap-4">
+                              {serial}
+                            </div>
+                          </td>
+                          <td className={className}>
+                            <div className="flex items-center gap-4">
+                              {name}
+                            </div>
+                          </td>
+                          <td className={className}>
+                            <div className="flex items-center gap-4">
+                              {department}
+                            </div>
+                          </td>
+                          <td className={className}>
+                            <div className="flex items-center gap-4">
+                              {cardId}
+                            </div>
+                          </td>
+                          <td className={className}>
+                            <div className="flex items-center gap-4">
+                              {device_uid}
+                            </div>
+                          </td>
+                          <td className="flex space-x-3 mt-1">
+                            <button onClick={(e) => handleShowUpdateModal(_id, e)} className="flex p-2 bg-green-500 rounded-xl hover:rounded-3xl hover:bg-green-600 transition-all duration-300 text-white">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
+                            <button onClick={(e) => handleShowDeleteModal(_id, e)} className="flex p-2 bg-red-400 rounded-xl hover:rounded-3xl hover:bg-red-600 transition-all duration-300 text-white">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 flex items-center text-white-500 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </td>
+                        </tr>
                     );
                   }
                 )}
@@ -181,6 +183,9 @@ export function Home() {
       </div>
       {showModal && (
         <ModalCreateStd onClose={toggleModal} />
+      )}
+      {showLog && (
+        <ModalLogUser onClose={handleShowLogModal} itemId={itemId}/>
       )}
       {showUpdate && (
         <ModalUpdateStd onClose={handleShowUpdateModal} itemId={itemId}/>
