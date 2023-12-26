@@ -57,13 +57,8 @@ router.patch("/:id", async (req, res) => {
 //Delete Device
 router.delete("/:id", async (req, res) => {
   try {
-    const device = await Device.findById(req.params.id);
-    try {
-      await device.delete();
-      res.status(200).json("Device has been deleted...");
-    } catch (err) {
-      res.status(500).json(err);
-    }
+    const device = await Device.findByIdAndDelete(req.params.id);
+    res.status(200).json("Device has been deleted...");
   } catch (err) {
     res.status(500).json(err);
   }
