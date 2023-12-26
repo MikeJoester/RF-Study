@@ -96,14 +96,7 @@ function StudentDashboard() {
           <div className="mr-auto md:mr-4 md:w-56">
             <Input label="Search" value={searchTerm} onChange={handleSearchChange}/>
           </div>
-          <IconButton
-            variant="text"
-            color="blue-gray"
-            className="grid xl:hidden"
-            onClick={() => setOpenSidenav(dispatch, !openSidenav)}
-          >
-            <Bars3Icon strokeWidth={3} className="h-6 w-6 text-blue-gray-500" />
-          </IconButton>
+     
           <Link to="/auth/sign-in">
             <Button
               variant="text"

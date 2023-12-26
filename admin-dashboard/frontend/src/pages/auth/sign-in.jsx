@@ -28,7 +28,7 @@ export function SignIn() {
       return;
     }
 
-    navigate('/home/dashboard'); // Redirect on successful login
+    navigate('/home/dashboard'); 
   };
 
   return (
