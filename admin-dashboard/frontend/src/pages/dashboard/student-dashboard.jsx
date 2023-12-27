@@ -88,8 +88,8 @@ function StudentDashboard() {
       fullWidth
       blurred={fixedNavbar}
     >
-      <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center px-12">
-        <div className="capitalize text-gray-800">
+      <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center px-1">
+        <div className="capitalize text-3xl font-bold text-gray-800">
           Board about attendance for student
         </div>
         <div className="flex items-center">

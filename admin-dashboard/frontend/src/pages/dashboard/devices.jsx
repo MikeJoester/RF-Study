@@ -14,7 +14,7 @@ import {
   ModalDeleteDevice,
 } from "@/widgets/popup";
 
-export function Tables() {
+export function Devices() {
   const [showModal, setShowModal] = useState(false);
   const [showLog, setShowLog] = useState(false);
   const [showDeleted, setShowDeleted] = useState(false);
@@ -174,4 +174,4 @@ export function Tables() {
   );
 }
 
-export default Tables;
+export default Devices;
