@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'monaco', 'monospace';
+            font-size: 16px;
+            padding: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        table {
+          border-collapse: collapse;
+        }
+
+        caption {
+            font-size: 1.5rem;
+        }
+    
+        td {
+          padding: 0.5rem 0;
+          padding-right: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>RF-Study's API</h1>
+    <table>
+        <caption><b>For admin</b></caption>
+        <tr>
+          <td>POST</td>
+          <td>/api/auth/login</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/auth/register</td>
+        </tr>
+    </table>
+    <table>
+        <caption><b>For students</b></caption>
+        <tr>
+          <td>GET(all students)</td>
+          <td>/api/std</td>
+        </tr>
+        <tr>
+          <td>GET(student by Student id)</td>
+          <td>/api/std/:id</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/std/</td>
+        </tr>
+        <tr>
+          <td>PATCH</td>
+          <td>/api/std/:id</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/api/std/:id</td>
+        </tr>
+        <tr>
+          <td>GET(student logs)</td>
+          <td>/api/std/:id/logs</td>
+        </tr>
+        <tr>
+          <td>POST(student log)</td>
+          <td>/api/std/:cardId/logs</td>
+        </tr>
+    </table>
+    <table>
+        <caption><b>For devices</b></caption>
+        <tr>
+          <td>GET(all devices)</td>
+          <td>/api/device</td>
+        </tr>
+        <tr>
+          <td>GET(device by id)</td>
+          <td>/api/device/:id</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/api/device/</td>
+        </tr>
+        <tr>
+          <td>PATCH</td>
+          <td>/api/device/:id</td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/api/device/:id</td>
+        </tr>
+    </table>
+</body>
+</html>
