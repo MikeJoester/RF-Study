@@ -1,12 +1,16 @@
-import React from "react";
-import './App.css'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Dashboard, Auth } from "@/layouts";
+import StudentDashboard from "./pages/dashboard/student-dashboard";
 
-const App = () => {
+function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-    hello world
-    </h1>
+    <Routes>
+      <Route path="/student-dashboard" element = {<StudentDashboard/>}/>
+      <Route path="/home/*" element={<Dashboard />} />
+      <Route path="/auth/*" element={<Auth />} />
+      <Route path="*" element={<Navigate to="/student-dashboard" replace />} />
+    </Routes>
   );
-};
+}
 
-export default App
+export default App;
