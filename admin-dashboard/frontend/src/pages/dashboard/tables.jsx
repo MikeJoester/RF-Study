@@ -42,14 +42,6 @@ export function Tables() {
     setShowModal(!showModal);
   };
 
-  const handleShowLogModal = (id) => {
-    console.log('check id: ', id)
-    if(id){
-      setItemId(id)
-    }
-    setShowLog(!showLog);
-  };
-
   const handleShowDeleteModal = (id, event) => {
     if (event) event.stopPropagation();
     if(id) {
