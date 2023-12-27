@@ -43,7 +43,7 @@ void setup() {
   Serial.println("Tap an RFID/NFC tag on the RFID-RC522 reader");
 }
 
-void postRequest(String req) {
+String postRequest(String req) {
   HTTPClient http;
 
   http.begin(req);
@@ -57,13 +57,16 @@ void postRequest(String req) {
     // file found at server
     if (httpCode == HTTP_CODE_OK) {
       String payload = http.getString();
-      Serial.println(payload);
+      // Serial.println(payload);
+      return "LOG REGISTERED";
     } else {
       // HTTP header has been send and Server response header has been handled
-      Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+      // Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+      return "ID NOT FOUND";
     }
   } else {
-    Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    // Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    return "NETWORK ERROR";
   }
 
   http.end();
@@ -78,22 +81,21 @@ void loop() {
 
       // print UID in Serial Monitor in the hex format
       Serial.print("UID: ");
-      String studentId = "";
+      String cardId = "";
       for (int i = 0; i < rfid.uid.size; i++) {
         // Serial.print(rfid.uid.uidByte[i] < 0x10 ? " 0" : " ");
         // Serial.print(rfid.uid.uidByte[i], DEC);
-        s += (rfid.uid.uidByte[i] < 0x10 ? "0" : "");
-        s = s + String(rfid.uid.uidByte[i], DEC);
+        cardId += (rfid.uid.uidByte[i] < 0x10 ? "0" : "");
+        cardId += String(rfid.uid.uidByte[i], DEC);
       }
-      postRequest(HOST_NAME + PATH_NAME + studentId + "/logs");
       // Serial.print(s);
       lcd_i2c.clear();              // clear display
       lcd_i2c.setCursor(0, 0);      // move cursor to   (0, 0)
-      lcd_i2c.print("ID:");       // print message at (0, 0)
+      lcd_i2c.print("ID: " + cardId);       // print message at (0, 0)
       lcd_i2c.setCursor(0, 1);      // move cursor to   (2, 1)
-      lcd_i2c.print(s); // print message at (2, 1)
-      delay(3000); 
-
+      lcd_i2c.print(postRequest(HOST_NAME + PATH_NAME + cardId + "/logs")); // print message at (2, 1)
+      delay(3000);
+      
       Serial.println();
 
       rfid.PICC_HaltA(); // halt PICC
