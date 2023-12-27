@@ -41,10 +41,6 @@
           <td>POST</td>
           <td>/api/auth/register</td>
         </tr>
-        <tr>
-          <td>POST</td>
-          <td>/api/auth/logout</td>
-        </tr>
     </table>
     <table>
         <caption><b>For students</b></caption>
@@ -61,12 +57,20 @@
           <td>/api/std/</td>
         </tr>
         <tr>
-          <td>PUT</td>
+          <td>PATCH</td>
           <td>/api/std/:id</td>
         </tr>
         <tr>
           <td>DELETE</td>
           <td>/api/std/:id</td>
+        </tr>
+        <tr>
+          <td>GET(student logs)</td>
+          <td>/api/std/:id/logs</td>
+        </tr>
+        <tr>
+          <td>POST(student log)</td>
+          <td>/api/std/:cardId/logs</td>
         </tr>
     </table>
     <table>
@@ -84,7 +88,7 @@
           <td>/api/device/</td>
         </tr>
         <tr>
-          <td>PUT</td>
+          <td>PATCH</td>
           <td>/api/device/:id</td>
         </tr>
         <tr>
