@@ -73,7 +73,7 @@ router.get("/:id/logs", async (req, res) => {
 //add student log
 router.post("/:id/logs", async (req, res) => {
   try {
-    const student = await Students.findById(req.params.id);
+    const student = await Students.findOne({ cardId: req.params.id });
     let today = new Date();
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     const newLog = {
