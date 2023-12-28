@@ -5,8 +5,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { authorsTableData, projectsTableData } from "@/data";
+import * as XLSX from 'xlsx';
 import {
   getUserInfo,
   getLogUser,
@@ -15,6 +14,14 @@ export function Attendance() {
 
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(userData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "UserData");
+  
+    XLSX.writeFile(wb, "Attendance.xlsx");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +70,13 @@ export function Attendance() {
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+          <div className="flex justify-between mx-5 mt-2">
+            <button id="defaultModalButton" onClick={exportToExcel} data-modal-target="defaultModal" data-modal-toggle="defaultModal" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+              Export File
+            </button>
+            <div className=" md:w-56">
+        </div>
+        </div>
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
