@@ -76,6 +76,7 @@ router.post("/:id/logs", async (req, res) => {
     const student = await Students.findOne({ cardId: req.params.id });
     let today = new Date();
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
     const newLog = {
       name : student.name,
       serial: student.serial,
@@ -83,17 +84,40 @@ router.post("/:id/logs", async (req, res) => {
       device_uid: student.device_uid,
       department: student.department,
       checkinDate: today,
-      timein: (!student.card_status) ? time : 0,
-      timeout: (student.card_status) ? time : 0,
     }
-    const Log =  new StudentLogs(newLog);
-    const savedLog = await Log.save();
 
-    await student.updateOne({
-      $set: { card_status: !student.card_status },
-      $push: { logs: savedLog._id }
-    })
-    return res.status(200).json(savedLog)
+    if (!student.card_status) {
+      const Log =  new StudentLogs({
+        ...newLog, 
+        timein: time,
+        timeout: 0
+      });
+      const savedLog = await Log.save();
+
+      await student.updateOne({
+        $set: { card_status: !student.card_status },
+        $push: { logs: savedLog._id }
+      });
+      return res.status(200).json(savedLog);
+    } else {
+      const studentLogs = await Students.findOne({ cardId: req.params.id }).populate('logs');
+      const lastLog = studentLogs.logs[studentLogs.logs.length - 1];
+
+      const updatedLog = await StudentLogs.findByIdAndUpdate(
+        lastLog._id,
+        {
+          $set: {
+            timeout: time,
+          },
+        },
+        { new: true }
+      );
+
+      await student.updateOne({
+        $set: { card_status: !student.card_status }
+      });
+      return res.status(200).json(updatedLog);
+    }  
   }catch (err) {
     return res.status(500).json(err);
   }
