@@ -5,6 +5,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import * as XLSX from 'xlsx';
 import {
   getUserInfo,
@@ -14,6 +16,7 @@ export function Attendance() {
 
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState("");
 
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(userData);
@@ -47,6 +50,32 @@ export function Attendance() {
 
   console.log('check userData: ', userData)
 
+  function formatTime(time) {
+    return time.split(':').map(t => t.padStart(2, '0')).join(':');
+  }
+
+  function clearDateFilter() {
+    setFilterDate("");
+  }
+
+  function handleFilterDateChange(event) {
+    setFilterDate(event.target.value);
+  }
+
+  function filterByDate(data) {
+    if (!filterDate) return data;
+    return data.filter(user => {
+      return user.logs?.some(log => {
+        const logDate = new Date(log.checkinDate).toLocaleDateString('en-GB');
+        console.log('check: ', logDate);
+        return logDate === new Date(filterDate).toLocaleDateString('en-GB');
+      });
+    });
+  }
+
+  const filteredData = filterByDate(userData);
+  const hasFilteredData = filteredData && filteredData.some(user => user.logs && user.logs.length > 0);
+
   if (isLoading) {
     return (
       <div className="text-center">
@@ -70,97 +99,119 @@ export function Attendance() {
           </Typography>
         </CardHeader>
         <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          <div className="flex justify-between mx-5 mt-2">
+          <div className="flex justify-between w-11/12 mx-5 mt-2">
+            <div className="flex justify-center items-center">
+              <DatePicker
+                placeholderText="dd/mm/yyyy"
+                dateFormat="dd/MM/yyyy"
+                selected={filterDate ? new Date(filterDate) : null}
+                onChange={date => setFilterDate(date)}
+                className="p-2 rounded border border-gray-300"
+              />
+              <button 
+                onClick={clearDateFilter} 
+                className="bg-red-700 hover:bg-red-600 text-white font-bold mx-2 py-2 px-4 rounded"
+              >
+                Reset
+              </button>
+            </div>
             <button id="defaultModalButton" onClick={exportToExcel} data-modal-target="defaultModal" data-modal-toggle="defaultModal" className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
               Export File
             </button>
-            <div className=" md:w-56">
-        </div>
-        </div>
-          <table className="w-full min-w-[640px] table-auto">
-            <thead>
-              <tr>
-                {["ID", "Student name", "Major", "Card ID", "Device UID", "Date", "Time In", "Time Out"].map(
-                  (el) => (
-                    <th
-                      key={el}
-                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                    >
-                      <Typography
-                        variant="small"
-                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+          </div>
+          {hasFilteredData ? (
+            <table className="w-full min-w-[640px] table-auto">
+              <thead>
+                <tr>
+                  {["ID", "Student name", "Major", "Card ID", "Device UID", "Date", "Time In", "Time Out"].map(
+                    (el) => (
+                      <th
+                        key={el}
+                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
                       >
-                        {el}
-                      </Typography>
-                    </th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-            {userData?.map((user, key) => {
-              if (user.logs && user.logs.length > 0) {
-                return user.logs?.map((log, logKey) => (
-                    <tr key={`${user._id}-${log._id}`}>
-                      <td className="py-3 px-5">
-                        {log.serial}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.name}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.department}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.cardId}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.device_uid}
-                      </td>
-                      <td className="py-3 px-5">
-                        {new Date(log.checkinDate).toLocaleDateString('en-GB')}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.timein}
-                      </td>
-                      <td className="py-3 px-5">
-                        {log.timeout}
-                      </td>
-                    </tr>
-                ));
-                } else {
-                  return (
-                    <tr key={user._id} className="text-red-400 italic">
-                      <td className="py-3 px-5">
-                        {user.serial}
-                      </td>
-                      <td className="py-3 px-5">
-                        {user.name}
-                      </td>
-                      <td className="py-3 px-5">
-                        {user.department}
-                      </td>
-                      <td className="py-3 px-5">
-                        {user.cardId}
-                      </td>
-                      <td className="py-3 px-5">
-                        {user.device_uid}
-                      </td>
-                      <td className="py-3 px-5">
-                        null
-                      </td>
-                      <td className="py-3 px-5">
-                        null
-                      </td>
-                      <td className="py-3 px-5">
-                        null
-                      </td>
-                    </tr>
-                  );
-                }
-              })}
-            </tbody>
-          </table>
+                        <Typography
+                          variant="small"
+                          className="text-[11px] font-bold uppercase text-blue-gray-400"
+                        >
+                          {el}
+                        </Typography>
+                      </th>
+                    )
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+              {filteredData?.map((user, key) => {
+                if (user.logs && user.logs.length > 0) {
+                  return user.logs?.map((log, logKey) => (
+                      <tr key={`${user._id}-${log._id}`}>
+                        <td className="py-3 px-5">
+                          {log.serial}
+                        </td>
+                        <td className="py-3 px-5">
+                          {log.name}
+                        </td>
+                        <td className="py-3 px-5">
+                          {log.department}
+                        </td>
+                        <td className="py-3 px-5">
+                          {log.cardId}
+                        </td>
+                        <td className="py-3 px-5">
+                          {log.device_uid}
+                        </td>
+                        <td className="py-3 px-5">
+                          {new Date(log.checkinDate).toLocaleDateString('en-GB')}
+                        </td>
+                        <td className="py-3 px-5">
+                          {formatTime(log.timein)}
+                        </td>
+                        <td className="py-3 px-5">
+                          {formatTime(log.timeout)}
+                        </td>
+                      </tr>
+                  ));
+                  } else {
+                    return (
+                      <tr key={user._id} className="text-red-400 italic">
+                        <td className="py-3 px-5">
+                          {user.serial}
+                        </td>
+                        <td className="py-3 px-5">
+                          {user.name}
+                        </td>
+                        <td className="py-3 px-5">
+                          {user.department}
+                        </td>
+                        <td className="py-3 px-5">
+                          {user.cardId}
+                        </td>
+                        <td className="py-3 px-5">
+                          {user.device_uid}
+                        </td>
+                        <td className="py-3 px-5">
+                          null
+                        </td>
+                        <td className="py-3 px-5">
+                          null
+                        </td>
+                        <td className="py-3 px-5">
+                          null
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <div className="text-center">
+              <Typography variant="h4" className="text-gray-500">
+                No data found
+              </Typography>
+            </div>
+          )}
+          
         </CardBody>
       </Card>
     </div>

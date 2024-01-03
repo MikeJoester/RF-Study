@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import {
     getLogUser,
   } from "@/API"
-
+  import {
+    Typography,
+  } from "@material-tailwind/react";
 export function ModalLogUser ({ onClose, itemId }) {
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +38,21 @@ export function ModalLogUser ({ onClose, itemId }) {
                 </div>
           </div>
         )
+    }
+
+    if (!userData || userData.length === 0) {
+        return (
+            <div className="absolute inset-0 bg-black bg-opacity-10 backdrop-filter backdrop-blur-sm z-40 flex justify-center items-center">
+                <div className="bg-white p-6 rounded shadow-lg text-center">
+                    <Typography variant="h6" color="gray">
+                        No logs found for this user.
+                    </Typography>
+                    <button onClick={onClose} className="mt-4 bg-blue-500 text-white p-2 rounded">
+                        Close
+                    </button>
+                </div>
+            </div>
+        );
     }
 
     return (

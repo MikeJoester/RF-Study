@@ -16,7 +16,7 @@ export function SignIn() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setError(''); // Reset error message
+    setError('');
 
     if (!email || !password) {
       setError('Please enter both email and password.');
