@@ -5,8 +5,8 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-#define SSID "21NTT"
-#define PASSWORD "abcd12345"
+#define SSID "VNUK4-2"
+#define PASSWORD "Z@q12wsx"
 #define HOST "https://rfstudy.onrender.com"
 #define PATH "/api/std/"
 #define SS_PIN 5
@@ -101,5 +101,12 @@ void loop() {
       rfid.PICC_HaltA(); // halt PICC
       rfid.PCD_StopCrypto1(); // stop encryption on PCD
     }
+  } else {
+    lcd_i2c.clear();              // clear display
+    lcd_i2c.setCursor(0, 0);      // move cursor to   (0, 0)
+    lcd_i2c.print("SCANNER IS ON");
+    lcd_i2c.setCursor(0, 1); 
+    lcd_i2c.print("PLEASE SCAN NOW");
+    delay(3000);
   }
 }
