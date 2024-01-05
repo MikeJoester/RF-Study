@@ -12,7 +12,7 @@ This is an IOT project to check students' attendance created by RFID team:
 ### Hardware
 In hardware folder, you can find one Arduino project named RFID_Reader. Open it with [Arduino IDE](https://www.arduino.cc/en/software).
 If you want to change the access Wifi SSID and password of the ESP32, you can edit these following codes in the file:
-```properties
+```c++
 #define SSID "Your Wifi Name"
 #define PASSWORD "Your Wifi Password"
 ```
